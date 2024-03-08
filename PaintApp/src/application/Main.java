@@ -175,19 +175,6 @@ public class Main extends Application {
 				menuItem[i] = new MenuItem(menuItemLabel[i]);
 			}
 
-			/*
-			 * strokeLine
-			 * strokeRect
-			 * strokeRoundRect
-			 * strokeOval
-			 * strokeArk
-			 *
-			 * fillText
-			 *
-			 * strokeText
-			 *
-			 */
-
 			for(int i = 0; i < shapeMenu.length; i++) {
 				shapeMenu[i] = new Menu(shapeMenuLabel[i]);
 			}
