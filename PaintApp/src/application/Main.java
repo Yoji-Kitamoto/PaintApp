@@ -130,11 +130,17 @@ public class Main extends Application {
 	private String[] shapeMenuLabel = {"四角形", "円", "線"};
 	private Menu[]   shapeMenu      = new Menu[shapeMenuLabel.length];
 
+	private String[]        rectangleRadioMenuItemLabel = {"長方形", "正方形", "長方形 (角丸)", "正方形 (角丸)"};
+	private RadioMenuItem[] rectangleRadioMenuItem      = new RadioMenuItem[rectangleRadioMenuItemLabel.length];
+
+	private String[]        circleRadioMenuItemLabel = {"円", "楕円"};
+	private RadioMenuItem[] circleRadioMenuItem      = new RadioMenuItem[circleRadioMenuItemLabel.length];
+
+	private String[]        lineRadioMenuItemLabel = {"直線"};
+	private RadioMenuItem[] lineRadioMenuItem      = new RadioMenuItem[lineRadioMenuItemLabel.length];
+
 	private String[]        radioMenuItemLabel = {"四角形", "長方形", "長方形 (角丸)", "正方形", "正方形 (角丸)", "楕円", "円", "直線"};
 	private RadioMenuItem[] radioMenuItem      = new RadioMenuItem[radioMenuItemLabel.length];
-
-	private String[]        rectangleRadioMenuItemLabel = {"長方形", "正方形"};
-	private RadioMenuItem[] rectangleRadioMenuItem      = new RadioMenuItem[rectangleRadioMenuItemLabel.length];
 
 	private ArrayList<Shape> shapeList;
 	private int    currentShape;
@@ -175,6 +181,22 @@ public class Main extends Application {
 			 *
 			 */
 
+			for(int i = 0; i < shapeMenu.length; i++) {
+				shapeMenu[i] = new Menu(shapeMenuLabel[i]);
+			}
+
+			for(int i = 0; i < rectangleRadioMenuItem.length; i++) {
+				rectangleRadioMenuItem[i] = new RadioMenuItem(rectangleRadioMenuItemLabel[i]);
+			}
+
+			for(int i = 0; i < circleRadioMenuItem.length; i++) {
+				circleRadioMenuItem[i] = new RadioMenuItem(circleRadioMenuItemLabel[i]);
+			}
+
+			for(int i = 0; i < lineRadioMenuItem.length; i++) {
+				lineRadioMenuItem[i] = new RadioMenuItem(lineRadioMenuItemLabel[i]);
+			}
+
 			for(int i = 0; i < radioMenuItem.length; i++) {
 				radioMenuItem[i] = new RadioMenuItem(radioMenuItemLabel[i]);
 			}
@@ -184,6 +206,22 @@ public class Main extends Application {
 			}
 
 			menu[1].getItems().add(menu[2]);
+
+			for(int i = 0; i < shapeMenu.length; i++) {
+				menu[2].getItems().add(shapeMenu[i]);
+			}
+
+			for(int i = 0; i < rectangleRadioMenuItem.length; i++) {
+				shapeMenu[0].getItems().add(rectangleRadioMenuItem[i]);
+			}
+
+			for(int i = 0; i < circleRadioMenuItem.length; i++) {
+				shapeMenu[1].getItems().add(circleRadioMenuItem[i]);
+			}
+
+			for(int i = 0; i < lineRadioMenuItem.length; i++) {
+				shapeMenu[2].getItems().add(lineRadioMenuItem[i]);
+			}
 
 			for(int i = 0; i < radioMenuItem.length; i++) {
 				menu[2].getItems().add(radioMenuItem[i]);
