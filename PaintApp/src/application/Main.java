@@ -27,12 +27,13 @@ import javafx.stage.Stage;
 
 
 abstract class Shape implements Serializable {
-	static final int RECT        = 0;
-	static final int ROUND_RECT = 1;
-	static final int SQUARE      = 2;
-	static final int OVAL        = 3;
-	static final int CIRCLE      = 4;
-	static final int LINE        = 5;
+	static final int RECT          = 0;
+	static final int ROUND_RECT   = 1;
+	static final int SQUARE        = 2;
+	static final int ROUND_SQUARE = 3;
+	static final int OVAL          = 4;
+	static final int CIRCLE        = 5;
+	static final int LINE          = 6;
 
 	double x1;
 	double y1;
@@ -68,6 +69,13 @@ class Rect extends Shape implements Serializable {
 	}
 }
 
+class RoundRect extends Shape implements Serializable {
+	public void draw(GraphicsContext graphicsContext) {
+		graphicsContext.setFill(Color.color(red, green, blue));
+		graphicsContext.fillRoundRect(x1, y1, x2 - x1, y2 - y1, 50, 50);
+	}
+}
+
 class Square extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
@@ -76,10 +84,11 @@ class Square extends Shape implements Serializable {
 	}
 }
 
-class RoundRect extends Shape implements Serializable {
+class RoundSquare extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
-		graphicsContext.fillRoundRect(x1, y1, x2 - x1, y2 - y1, 50, 50);
+		double length = ((x2 - x1) <= (y2 - y1)) ? (x2- x1) : (y2 - y1);
+		graphicsContext.fillRoundRect(x1, y1, length, length, 50, 50);
 	}
 }
 
@@ -121,7 +130,7 @@ public class Main extends Application {
 	private String[] shapeMenuLabel = {"四角形", "円", "線"};
 	private Menu[]   shapeMenu      = new Menu[shapeMenuLabel.length];
 
-	private String[]        radioMenuItemLabel = {"四角形", "長方形", "長方形 (角丸)", "正方形", "楕円", "円", "直線"};
+	private String[]        radioMenuItemLabel = {"四角形", "長方形", "長方形 (角丸)", "正方形", "正方形 (角丸)", "楕円", "円", "直線"};
 	private RadioMenuItem[] radioMenuItem      = new RadioMenuItem[radioMenuItemLabel.length];
 
 	private String[]        rectangleRadioMenuItemLabel = {"長方形", "正方形"};
@@ -152,7 +161,6 @@ public class Main extends Application {
 			}
 
 			/*
-			 * fillRoundRect (角丸)
 			 * fillArc
 			 *
 			 * strokeLine
@@ -256,16 +264,20 @@ public class Main extends Application {
 			radioMenuItem[3].setOnAction((actionEvent) -> {
 				currentShape = Shape.SQUARE;
 			});
-			// 楕円
+			// 正方形 (角丸)
 			radioMenuItem[4].setOnAction((actionEvent) -> {
+				currentShape = Shape.ROUND_SQUARE;
+			});
+			// 楕円
+			radioMenuItem[5].setOnAction((actionEvent) -> {
 				currentShape = Shape.OVAL;
 			});
 			// 円
-			radioMenuItem[5].setOnAction((actionEvent) -> {
+			radioMenuItem[6].setOnAction((actionEvent) -> {
 				currentShape = Shape.CIRCLE;
 			});
 			// 直線
-			radioMenuItem[6].setOnAction((actionEvent) -> {
+			radioMenuItem[7].setOnAction((actionEvent) -> {
 				currentShape = Shape.LINE;
 			});
 
@@ -292,6 +304,8 @@ public class Main extends Application {
 					shape = new RoundRect();
 				} else if(currentShape == Shape.SQUARE){
 					shape = new Square();
+				} else if(currentShape == Shape.ROUND_SQUARE){
+					shape = new RoundSquare();
 				} else if(currentShape == Shape.OVAL) {
 					shape = new Oval();
 				} else if(currentShape == Shape.CIRCLE){
