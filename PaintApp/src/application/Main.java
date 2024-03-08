@@ -116,7 +116,6 @@ class Line extends Shape implements Serializable {
 
 public class Main extends Application {
 	private MenuBar     menuBar;
-	private ToggleGroup toggleGroup;
 	private ColorPicker colorPicker;
 	private Canvas      canvas;
 	private ToolBar     toolBar;
@@ -138,9 +137,6 @@ public class Main extends Application {
 
 	private String[]        lineRadioMenuItemLabel = {"直線"};
 	private RadioMenuItem[] lineRadioMenuItem      = new RadioMenuItem[lineRadioMenuItemLabel.length];
-
-	private String[]        radioMenuItemLabel = {"四角形", "長方形", "長方形 (角丸)", "正方形", "正方形 (角丸)", "楕円", "円", "直線"};
-	private RadioMenuItem[] radioMenuItem      = new RadioMenuItem[radioMenuItemLabel.length];
 
 	private ToggleGroup rectangleToggleGroup;
 	private ToggleGroup circleToggleGroup;
@@ -207,10 +203,6 @@ public class Main extends Application {
 				lineRadioMenuItem[i].setToggleGroup(lineToggleGroup);
 			}
 
-			for(int i = 0; i < radioMenuItem.length; i++) {
-				radioMenuItem[i] = new RadioMenuItem(radioMenuItemLabel[i]);
-			}
-
 			for(int i = 0; i < menuItem.length; i++) {
 				menu[0].getItems().add(menuItem[i]);
 			}
@@ -233,20 +225,11 @@ public class Main extends Application {
 				shapeMenu[2].getItems().add(lineRadioMenuItem[i]);
 			}
 
-			for(int i = 0; i < radioMenuItem.length; i++) {
-				menu[2].getItems().add(radioMenuItem[i]);
-			}
-
 			for(int i = 0; i < (menu.length - 1); i++) {
 				menuBar.getMenus().add(menu[i]);
 			}
 
 			toolBar.getItems().add(colorPicker);
-
-			toggleGroup = new ToggleGroup();
-			for(int i = 0; i < radioMenuItem.length; i++) {
-				radioMenuItem[i].setToggleGroup(toggleGroup);
-			}
 
 			var borderPane = new BorderPane();
 			borderPane.setTop(menuBar);
@@ -394,7 +377,6 @@ public class Main extends Application {
 			rectangleRadioMenuItem[0].setSelected(true);
 			circleRadioMenuItem[0].setSelected(true);
 			lineRadioMenuItem[0].setSelected(true);
-			radioMenuItem[0].setSelected(true);
 			x1 = -1;
 			y1 = -1;
 			x2 = -1;
