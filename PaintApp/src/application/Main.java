@@ -22,6 +22,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -32,8 +33,9 @@ abstract class Shape implements Serializable {
 	static final int ROUND_RECT    = 2;
 	static final int ROUND_SQUARE  = 3;
 	static final int CIRCLE        = 4;
-	static final int OVAL          = 5;
-	static final int LINE          = 6;
+	static final int ARC           = 5;
+	static final int OVAL          = 6;
+	static final int LINE          = 7;
 
 	double x1;
 	double y1;
@@ -107,6 +109,13 @@ class Circle extends Shape implements Serializable {
 	}
 }
 
+class Arc extends Shape implements Serializable {
+	public void draw(GraphicsContext graphicsContext) {
+		graphicsContext.setFill(Color.color(red, green, blue));
+		graphicsContext.fillArc(x1, y1, x2- x1, (y2 - y1) * 2, 20, 140, ArcType.CHORD);
+	}
+}
+
 class Line extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setStroke(Color.color(red, green, blue));
@@ -132,7 +141,7 @@ public class Main extends Application {
 	private String[]        rectangleRadioMenuItemLabel = {"長方形", "正方形", "長方形 (角丸)", "正方形 (角丸)"};
 	private RadioMenuItem[] rectangleRadioMenuItem      = new RadioMenuItem[rectangleRadioMenuItemLabel.length];
 
-	private String[]        circleRadioMenuItemLabel = {"円", "楕円"};
+	private String[]        circleRadioMenuItemLabel = {"円", "楕円", "円弧"};
 	private RadioMenuItem[] circleRadioMenuItem      = new RadioMenuItem[circleRadioMenuItemLabel.length];
 
 	private String[]        lineRadioMenuItemLabel = {"直線"};
@@ -167,8 +176,6 @@ public class Main extends Application {
 			}
 
 			/*
-			 * fillArc
-			 *
 			 * strokeLine
 			 * strokeRect
 			 * strokeRoundRect
@@ -308,6 +315,10 @@ public class Main extends Application {
 			circleRadioMenuItem[1].setOnAction((actionEvent) -> {
 				currentShape = Shape.OVAL;
 			});
+			// 円弧
+			circleRadioMenuItem[2].setOnAction((actionEvent) -> {
+				currentShape = Shape.ARC;
+			});
 
 			// 直線
 			lineRadioMenuItem[0].setOnAction((actionEvent) -> {
@@ -343,6 +354,8 @@ public class Main extends Application {
 					shape = new Circle();
 				} else if(currentShape == Shape.OVAL) {
 					shape = new Oval();
+				} else if(currentShape == Shape.ARC) {
+					shape = new Arc();
 				} else if(currentShape == Shape.LINE) {
 					shape = new Line();
 				}
