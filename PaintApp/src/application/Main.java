@@ -29,8 +29,8 @@ import javafx.stage.Stage;
 abstract class Shape implements Serializable {
 	static final int RECT          = 0;
 	static final int SQUARE        = 1;
-	static final int ROUND_RECT   = 2;
-	static final int ROUND_SQUARE = 3;
+	static final int ROUND_RECT    = 2;
+	static final int ROUND_SQUARE  = 3;
 	static final int CIRCLE        = 4;
 	static final int OVAL          = 5;
 	static final int LINE          = 6;
