@@ -28,22 +28,22 @@ import javafx.stage.Stage;
 
 
 abstract class Shape implements Serializable {
-	static final int RECT          = 0;
-	static final int SQUARE        = 1;
-	static final int ROUND_RECT    = 2;
-	static final int ROUND_SQUARE  = 3;
-	static final int CIRCLE        = 4;
-	static final int ARC           = 5;
-	static final int OVAL          = 6;
-	static final int LINE          = 7;
+	protected static final int RECT          = 0;
+	protected static final int SQUARE        = 1;
+	protected static final int ROUND_RECT    = 2;
+	protected static final int ROUND_SQUARE  = 3;
+	protected static final int CIRCLE        = 4;
+	protected static final int ARC           = 5;
+	protected static final int OVAL          = 6;
+	protected static final int LINE          = 7;
 
-	double x1;
-	double y1;
-	double x2;
-	double y2;
-	double red;
-	double green;
-	double blue;
+	protected double x1;
+	protected double y1;
+	protected double x2;
+	protected double y2;
+	protected double red;
+	protected double green;
+	protected double blue;
 
 	abstract public void draw(GraphicsContext graphicContext);
 
@@ -64,21 +64,21 @@ abstract class Shape implements Serializable {
 	}
 }
 
-class Rect extends Shape implements Serializable {
+final class Rect extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		graphicsContext.fillRect(x1, y1, x2 - x1, y2 - y1);
 	}
 }
 
-class RoundRect extends Shape implements Serializable {
+final class RoundRect extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		graphicsContext.fillRoundRect(x1, y1, x2 - x1, y2 - y1, 50, 50);
 	}
 }
 
-class Square extends Shape implements Serializable {
+final class Square extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		double length = ((x2 - x1) <= (y2 - y1)) ? (x2- x1) : (y2 - y1);
@@ -86,7 +86,7 @@ class Square extends Shape implements Serializable {
 	}
 }
 
-class RoundSquare extends Shape implements Serializable {
+final class RoundSquare extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		double length = ((x2 - x1) <= (y2 - y1)) ? (x2- x1) : (y2 - y1);
@@ -94,14 +94,14 @@ class RoundSquare extends Shape implements Serializable {
 	}
 }
 
-class Oval extends Shape implements Serializable {
+final class Oval extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		graphicsContext.fillOval(x1, y1, x2 - x1, y2 - y1);
 	}
 }
 
-class Circle extends Shape implements Serializable {
+final class Circle extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		double length = ((x2 - x1) <= (y2 - y1)) ? (x2- x1) : (y2 - y1);
@@ -109,14 +109,14 @@ class Circle extends Shape implements Serializable {
 	}
 }
 
-class Arc extends Shape implements Serializable {
+final class Arc extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setFill(Color.color(red, green, blue));
 		graphicsContext.fillArc(x1, y1, x2- x1, (y2 - y1) * 2, 20, 140, ArcType.CHORD);
 	}
 }
 
-class Line extends Shape implements Serializable {
+final class Line extends Shape implements Serializable {
 	public void draw(GraphicsContext graphicsContext) {
 		graphicsContext.setStroke(Color.color(red, green, blue));
 		graphicsContext.strokeLine(x1, y1, x2, y2);
@@ -197,26 +197,26 @@ public class Main extends Application {
 				lineRadioMenuItem[i].setToggleGroup(lineToggleGroup);
 			}
 
-			for(int i = 0; i < menuItem.length; i++) {
-				menu[0].getItems().add(menuItem[i]);
+			for(MenuItem i : menuItem) {
+				menu[0].getItems().add(i);
 			}
 
 			menu[1].getItems().add(menu[2]);
 
-			for(int i = 0; i < shapeMenu.length; i++) {
-				menu[2].getItems().add(shapeMenu[i]);
+			for(Menu m : shapeMenu) {
+				menu[2].getItems().add(m);
 			}
 
-			for(int i = 0; i < rectangleRadioMenuItem.length; i++) {
-				shapeMenu[0].getItems().add(rectangleRadioMenuItem[i]);
+			for(RadioMenuItem i : rectangleRadioMenuItem) {
+				shapeMenu[0].getItems().add(i);
 			}
 
-			for(int i = 0; i < circleRadioMenuItem.length; i++) {
-				shapeMenu[1].getItems().add(circleRadioMenuItem[i]);
+			for(RadioMenuItem i : circleRadioMenuItem) {
+				shapeMenu[1].getItems().add(i);
 			}
 
-			for(int i = 0; i < lineRadioMenuItem.length; i++) {
-				shapeMenu[2].getItems().add(lineRadioMenuItem[i]);
+			for(RadioMenuItem i : lineRadioMenuItem) {
+				shapeMenu[2].getItems().add(i);
 			}
 
 			for(int i = 0; i < (menu.length - 1); i++) {
@@ -329,22 +329,38 @@ public class Main extends Application {
 				}
 
 				Shape shape = null;
-				if(currentShape == Shape.RECT) {
-					shape = new Rect();
-				} else if(currentShape == Shape.SQUARE){
-					shape = new Square();
-				} else if(currentShape == Shape.ROUND_RECT){
-					shape = new RoundRect();
-				} else if(currentShape == Shape.ROUND_SQUARE){
-					shape = new RoundSquare();
-				} else if(currentShape == Shape.CIRCLE){
-					shape = new Circle();
-				} else if(currentShape == Shape.OVAL) {
-					shape = new Oval();
-				} else if(currentShape == Shape.ARC) {
-					shape = new Arc();
-				} else if(currentShape == Shape.LINE) {
-					shape = new Line();
+				switch(currentShape) {
+					case Shape.RECT:
+						shape = new Rect();
+						break;
+
+					case Shape.SQUARE:
+						shape = new Square();
+						break;
+
+					case Shape.ROUND_RECT:
+						shape = new RoundRect();
+						break;
+
+					case Shape.ROUND_SQUARE:
+						shape = new RoundSquare();
+						break;
+
+					case Shape.CIRCLE:
+						shape = new Circle();
+						break;
+
+					case Shape.OVAL:
+						shape = new Oval();
+						break;
+
+					case Shape.ARC:
+						shape = new Arc();
+						break;
+
+					case Shape.LINE:
+						shape = new Line();
+						break;
 				}
 
 				shape.setColor(currentColor.getRed(), currentColor.getGreen(), currentColor.getBlue());
@@ -366,8 +382,7 @@ public class Main extends Application {
 
 				shapeList.add(shape);
 
-				GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-				shape.draw(graphicsContext);
+				shape.draw(canvas.getGraphicsContext2D());
 			});
 
 			shapeList = new ArrayList<Shape>();
@@ -382,8 +397,7 @@ public class Main extends Application {
 			x2 = -1;
 			y2 = -1;
 
-			var scene = new Scene(borderPane, 600, 400);
-			primaryStage.setScene(scene);
+			primaryStage.setScene(new Scene(borderPane, 600, 400));
 			primaryStage.setTitle("PaintApp");
 			primaryStage.show();
 		} catch(Exception e) {
