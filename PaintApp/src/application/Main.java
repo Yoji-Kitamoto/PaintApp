@@ -28,11 +28,11 @@ import javafx.stage.Stage;
 
 abstract class Shape implements Serializable {
 	static final int RECT          = 0;
-	static final int ROUND_RECT   = 1;
-	static final int SQUARE        = 2;
+	static final int SQUARE        = 1;
+	static final int ROUND_RECT   = 2;
 	static final int ROUND_SQUARE = 3;
-	static final int OVAL          = 4;
-	static final int CIRCLE        = 5;
+	static final int CIRCLE        = 4;
+	static final int OVAL          = 5;
 	static final int LINE          = 6;
 
 	double x1;
@@ -142,6 +142,10 @@ public class Main extends Application {
 	private String[]        radioMenuItemLabel = {"四角形", "長方形", "長方形 (角丸)", "正方形", "正方形 (角丸)", "楕円", "円", "直線"};
 	private RadioMenuItem[] radioMenuItem      = new RadioMenuItem[radioMenuItemLabel.length];
 
+	private ToggleGroup rectangleToggleGroup;
+	private ToggleGroup circleToggleGroup;
+	private ToggleGroup lineToggleGroup;
+
 	private ArrayList<Shape> shapeList;
 	private int    currentShape;
 	private Color  currentColor;
@@ -185,16 +189,22 @@ public class Main extends Application {
 				shapeMenu[i] = new Menu(shapeMenuLabel[i]);
 			}
 
+			rectangleToggleGroup = new ToggleGroup();
 			for(int i = 0; i < rectangleRadioMenuItem.length; i++) {
 				rectangleRadioMenuItem[i] = new RadioMenuItem(rectangleRadioMenuItemLabel[i]);
+				rectangleRadioMenuItem[i].setToggleGroup(rectangleToggleGroup);
 			}
 
+			circleToggleGroup = new ToggleGroup();
 			for(int i = 0; i < circleRadioMenuItem.length; i++) {
 				circleRadioMenuItem[i] = new RadioMenuItem(circleRadioMenuItemLabel[i]);
+				circleRadioMenuItem[i].setToggleGroup(circleToggleGroup);
 			}
 
+			lineToggleGroup = new ToggleGroup();
 			for(int i = 0; i < lineRadioMenuItem.length; i++) {
 				lineRadioMenuItem[i] = new RadioMenuItem(lineRadioMenuItemLabel[i]);
+				lineRadioMenuItem[i].setToggleGroup(lineToggleGroup);
 			}
 
 			for(int i = 0; i < radioMenuItem.length; i++) {
@@ -291,31 +301,33 @@ public class Main extends Application {
 			});
 
 			// 長方形
-			radioMenuItem[1].setOnAction((actionEvent) -> {
+			rectangleRadioMenuItem[0].setOnAction((actionEvent) -> {
 				currentShape = Shape.RECT;
 			});
-			// 長方形 (角丸)
-			radioMenuItem[2].setOnAction((actionEvent) -> {
-				currentShape = Shape.ROUND_RECT;
-			});
 			// 正方形
-			radioMenuItem[3].setOnAction((actionEvent) -> {
+			rectangleRadioMenuItem[1].setOnAction((actionEvent) -> {
 				currentShape = Shape.SQUARE;
 			});
+			// 長方形 (角丸)
+			rectangleRadioMenuItem[2].setOnAction((actionEvent) -> {
+				currentShape = Shape.ROUND_RECT;
+			});
 			// 正方形 (角丸)
-			radioMenuItem[4].setOnAction((actionEvent) -> {
+			rectangleRadioMenuItem[3].setOnAction((actionEvent) -> {
 				currentShape = Shape.ROUND_SQUARE;
 			});
-			// 楕円
-			radioMenuItem[5].setOnAction((actionEvent) -> {
-				currentShape = Shape.OVAL;
-			});
+
 			// 円
-			radioMenuItem[6].setOnAction((actionEvent) -> {
+			circleRadioMenuItem[0].setOnAction((actionEvent) -> {
 				currentShape = Shape.CIRCLE;
 			});
+			// 楕円
+			circleRadioMenuItem[1].setOnAction((actionEvent) -> {
+				currentShape = Shape.OVAL;
+			});
+
 			// 直線
-			radioMenuItem[7].setOnAction((actionEvent) -> {
+			lineRadioMenuItem[0].setOnAction((actionEvent) -> {
 				currentShape = Shape.LINE;
 			});
 
@@ -338,16 +350,16 @@ public class Main extends Application {
 				Shape shape = null;
 				if(currentShape == Shape.RECT) {
 					shape = new Rect();
-				} else if(currentShape == Shape.ROUND_RECT){
-					shape = new RoundRect();
 				} else if(currentShape == Shape.SQUARE){
 					shape = new Square();
+				} else if(currentShape == Shape.ROUND_RECT){
+					shape = new RoundRect();
 				} else if(currentShape == Shape.ROUND_SQUARE){
 					shape = new RoundSquare();
-				} else if(currentShape == Shape.OVAL) {
-					shape = new Oval();
 				} else if(currentShape == Shape.CIRCLE){
 					shape = new Circle();
+				} else if(currentShape == Shape.OVAL) {
+					shape = new Oval();
 				} else if(currentShape == Shape.LINE) {
 					shape = new Line();
 				}
@@ -379,6 +391,9 @@ public class Main extends Application {
 			currentShape = Shape.RECT;
 			currentColor = Color.BLUE;
 			colorPicker.setValue(currentColor);
+			rectangleRadioMenuItem[0].setSelected(true);
+			circleRadioMenuItem[0].setSelected(true);
+			lineRadioMenuItem[0].setSelected(true);
 			radioMenuItem[0].setSelected(true);
 			x1 = -1;
 			y1 = -1;
